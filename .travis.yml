@@ -5,14 +5,14 @@ services:
 
 script:
   - if [ "$TRAVIS_BRANCH" == "master" ]; then
-    docker build -t jasl8r/cobbler .
-    docker build -f Dockerfile-cobblerd -t jasl8r/cobblerd .
-    docker build -f Dockerfile-tftpd -t jasl8r/tftpd .
-    fi
+  - docker build -t jasl8r/cobbler .
+  - docker build -f Dockerfile-cobblerd -t jasl8r/cobblerd .
+  - docker build -f Dockerfile-tftpd -t jasl8r/tftpd .
+  - fi
 
 after_success:
   - if [ "$TRAVIS_BRANCH" == "master" ]; then
-    docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
-    docker push jasl8r/cobblerd;
-    docker push jasl8r/tftpd;
-    fi
+  - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
+  - docker push jasl8r/cobblerd;
+  - docker push jasl8r/tftpd;
+  - fi
