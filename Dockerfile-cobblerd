@@ -1,0 +1,16 @@
+FROM jasl8r/cobbler
+MAINTAINER jasl8r@alum.wpi.edu
+
+VOLUME /etc/cobbler
+VOLUME /srv/tftp
+VOLUME /var/lib/cobbler
+VOLUME /var/log/cobbler
+
+EXPOSE 80
+
+CMD ["dockerize", \
+     "-template", "/cobbler/modules.conf.tmpl:/etc/cobbler/modules.conf", \
+     "-template", "/cobbler/settings.tmpl:/etc/cobbler/settings", \
+     "-template", "/cobbler/dnsmasq.tmpl:/etc/cobbler/dnsmasq.template", \
+     "-stdout", "/var/log/cobbler/cobbler.log", \
+     "cobblerd", "-F"]

@@ -1,8 +1,6 @@
 FROM jasl8r/cobbler
 MAINTAINER jasl8r@alum.wpi.edu
 
-RUN pip install tornado
-
 EXPOSE 69/udp
 
 CMD ["dockerize", \

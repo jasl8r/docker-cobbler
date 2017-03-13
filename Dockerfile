@@ -10,7 +10,7 @@ RUN curl -LO https://github.com/jwilder/dockerize/releases/download/v${DOCKERIZE
  && tar -C /usr/local/bin -xzvf dockerize-linux-amd64-v${DOCKERIZE_VERSION}.tar.gz \
  && rm dockerize-linux-amd64-v${DOCKERIZE_VERSION}.tar.gz
 
-RUN pip install docker pyyaml pycurl cheetah netaddr simplejson urlgrabber
+RUN pip install cheetah docker netaddr pyyaml pycurl simplejson tornado urlgrabber
 
 COPY docker.patch /cobbler/
 
@@ -26,17 +26,3 @@ RUN curl -LO https://github.com/cobbler/cobbler/archive/v${COBBLER_VERSION}.tar.
 
 COPY sync_post_manage_docker.py /usr/local/lib/python2.7/site-packages/cobbler/modules/
 COPY dnsmasq.tmpl modules.conf.tmpl settings.tmpl /cobbler/
-
-VOLUME /etc/cobbler
-VOLUME /srv/tftp
-VOLUME /var/lib/cobbler
-VOLUME /var/log/cobbler
-
-EXPOSE 80
-
-CMD ["dockerize", \
-     "-template", "/cobbler/modules.conf.tmpl:/etc/cobbler/modules.conf", \
-     "-template", "/cobbler/settings.tmpl:/etc/cobbler/settings", \
-     "-template", "/cobbler/dnsmasq.tmpl:/etc/cobbler/dnsmasq.template", \
-     "-stdout", "/var/log/cobbler/cobbler.log", \
-     "cobblerd", "-F"]
