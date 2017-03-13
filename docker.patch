@@ -1,0 +1,39 @@
+diff --git a/cobbler/cobblerd.py b/cobbler/cobblerd.py
+index 2f71720..1e42000 100644
+--- a/cobbler/cobblerd.py
++++ b/cobbler/cobblerd.py
+@@ -105,7 +105,7 @@ def log(logger,msg):
+ def do_xmlrpc_rw(bootapi,settings,port):
+ 
+     xinterface = remote.ProxiedXMLRPCInterface(bootapi,remote.CobblerXMLRPCInterface)
+-    server = remote.CobblerXMLRPCServer(('127.0.0.1', port))
++    server = remote.CobblerXMLRPCServer(('0.0.0.0', port))
+     server.logRequests = 0  # don't print stuff
+     xinterface.logger.debug("XMLRPC running on %s" % port)
+     server.register_instance(xinterface)
+diff --git a/cobbler/utils.py b/cobbler/utils.py
+index 37edbc3..2f71c80 100644
+--- a/cobbler/utils.py
++++ b/cobbler/utils.py
+@@ -1003,8 +1003,8 @@ def os_release():
+       raise CX("failed to detect local OS version from /etc/redhat-release")
+ 
+    elif check_dist() == "debian":
+-      import lsb_release
+-      release = lsb_release.get_distro_information()['RELEASE']
++      import platform
++      release = platform.dist()[1]
+       return ("debian", release)
+    elif check_dist() == "ubuntu":
+       version = subprocess.check_output(("lsb_release","--release","--short")).rstrip()
+@@ -2101,8 +2101,9 @@ def local_get_cobbler_api_url():
+     protocol = "http"
+     if data.get("client_use_https", False):
+         protocol = "https"
++    path = data.get("api_root", "/cobbler_api")
+ 
+-    return "%s://%s:%s/cobbler_api" % (protocol,ip,port)
++    return "%s://%s:%s%s" % (protocol,ip,port,path)
+ 
+ def get_ldap_template(ldaptype=None):
+     """
