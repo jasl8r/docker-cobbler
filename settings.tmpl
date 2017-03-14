@@ -421,7 +421,7 @@ webdir: /srv/www/cobbler
 # cobbler's public XMLRPC listens on this port.  Change this only
 # if absolutely needed, as you'll have to start supplying a new
 # port option to koan if it is not the default.
-xmlrpc_port: {{ default .Env.COBBLER_API_PORT "80" }}
+xmlrpc_port: 80
 
 # "cobbler repo add" commands set cobbler up with repository
 # information that can be used during kickstart and is automatically
