@@ -12,7 +12,7 @@ def run(api, args, logger):
 
     try:
         client = docker.from_env()
-        container = os.environ["COBBLER_MANAGED_CONTAINER"]
+        container = os.environ.get("COBBLER_MANAGED_CONTAINER")
         if container:
             containers = [client.containers.get(container)]
         else:
@@ -20,6 +20,6 @@ def run(api, args, logger):
         for container in containers:
             container.restart()
     except:
-        logger.error("restarting docker container failed")
+        logger.exception("restarting docker container failed")
         return 1
     return 0
