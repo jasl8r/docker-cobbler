@@ -13,7 +13,12 @@ def run(api, args, logger):
     try:
         client = docker.from_env()
         container = os.environ["COBBLER_MANAGED_CONTAINER"]
-        client.containers.get(container).restart()
+        if container:
+            containers = [client.containers.get(container)]
+        else:
+            containers = docker.containers.list(filters={"label": "io.github.cobbler.service.dnsmasq"})
+        for container in containers:
+            container.restart()
     except:
         logger.error("restarting docker container failed")
         return 1
