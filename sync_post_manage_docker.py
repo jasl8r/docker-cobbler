@@ -16,7 +16,7 @@ def run(api, args, logger):
         if container:
             containers = [client.containers.get(container)]
         else:
-            containers = docker.containers.list(filters={"label": "io.github.cobbler.service.dnsmasq"})
+            containers = client.containers.list(filters={"label": "io.github.cobbler.service.dnsmasq"})
         for container in containers:
             container.restart()
     except:
